@@ -12,7 +12,7 @@ Implemented methods:
 * /users/user-id
 * /users/search
 * /media/media-id
-* /meida/popular
+* /media/popular
 * /media/search
 * /locations/location-id
 * /locations/location-id/media/recent
