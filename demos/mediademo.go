@@ -1,7 +1,7 @@
 package main
 
 import (
-	"instago"
+	"github.com/programmingthomas/instago"
 	"fmt"
 	"io/ioutil"
 )
