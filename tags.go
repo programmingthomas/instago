@@ -1,4 +1,3 @@
-//Mirrors the functions described on http://instagram.com/developer/endpoints/tags
 package instago
 
 //Gets all (16) recent photos with the given tag

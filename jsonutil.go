@@ -1,12 +1,9 @@
-//This file contains some utility functions that make dealing with the JSON a little easier
-//Go's json package (encoding/json) will convert everything to a map[string]interface{}
-//however that is not entirely relevant when working with the Instagram API and it can be
-//a pain to access even the most simple of functions because Go assumes that values are
-//not strings/numbers/arrays/etc by default, however when working with the API we know
-//that they are, so we can use this instead
 package instago
 
-//JSON Objects are basicallly just maps because the JSON spec insists on keys being strings
+//The JSON type can be used when you do not directly want to parse JSON data into a Go
+//struct, or when you are dealing with object types that are unknown or constantly 
+//changing. The API uses this because a) The structure of some Instagram API requests adds
+//a lot of additional unnecessary data that ought not be in the final Go response.
 type JSON map[string]interface{}
 
 //Check to see if an interface is a string and if it is not, return an empty string
@@ -24,7 +21,7 @@ func JSONInt(data interface{}) int {
 	return int(JSONFloat(data))
 }
 
-//Check to see if an interface is a float and if it is not it will return 0
+//Check to see if an interface is a float(64) and if it is not it will return 0
 func JSONFloat(data interface{}) float64 { 
 	if number, ok := data.(float64); ok {
 		return number
@@ -69,32 +66,37 @@ func JSONObjectArray(data interface{}) []JSON {
 	return objs
 }
 
-//The following functions provide utility functions for working directly with a JSON //object (a map)
-
+//Utility wrapper around JSONString
 func (json JSON) String(key string) string {
 	return JSONString(json[key])
 }
 
+//Utility wrapper around JSONInt
 func (json JSON) Int(key string) int {
 	return JSONInt(json[key])
 }
 
+//Utility wrapper around JSONFloat
 func (json JSON) Float(key string) float64 {
 	return JSONFloat(json[key])
 }
 
+//Utility wrapper around JSONArray
 func (json JSON) Array(key string) []interface{} {
 	return JSONArray(json[key])
 }
 
+//Utility wrapper around JSONObject
 func (json JSON) Object(key string) JSON {
 	return JSONObject(json[key])
 }
 
+//Utility wrapper around JSONStringArray
 func (json JSON) StringArray(key string) []string {
 	return JSONStringArray(json[key])
 }
 
+//Utility wrapper around JSONObjectArray
 func (json JSON) ObjectArray(key string) []JSON {
 	return JSONObjectArray(json[key])
 }

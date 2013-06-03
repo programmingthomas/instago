@@ -1,4 +1,3 @@
-//Mirrors the functions described on http://instagram.com/developer/endpoints/locations
 package instago
 
 import "fmt"

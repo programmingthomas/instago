@@ -1,4 +1,3 @@
-//Mirrors the functions described in http://instagram.com/developer/endpoints/users/
 package instago
 
 import "fmt"

@@ -1,3 +1,5 @@
+//Instago provides a simple library that makes it easier to interact with Instagram through
+//their API directly from Go
 package instago
 
 import (
@@ -12,11 +14,19 @@ import (
 	"fmt"
 )
 
+//The InstagramAPI object stores your credentials. You can obtain a ClientID from
+//http://instagram.com/developer. If you want to interact directly with a user's account
+//you can also obtain an AccessToken through OAuth, however this library currently doesn't
+//support obtaining the ClientID. If the AccessToken is present the ClientID will be
+//ignored (even if the request fails). You should create an InstagramAPI struct with
+//at least one of these values
 type InstagramAPI struct {
 	ClientID string
 	AccessToken string
 }
 
+//Represents an image response from Instagram's servers including key details about the
+//image. Comments are currently not included.
 type Image struct {
 	Filter string
 	Tags []string
@@ -35,6 +45,8 @@ type Image struct {
 	Location Location
 }
 
+//Represents a user response from Instagram's servers. This may come from an image,
+//comment or directly from a user request (N.B. these kind of requests require OAuth)
 type User struct {
 	ID string
 	Username string
@@ -47,11 +59,15 @@ type User struct {
 	TotalFollowers int
 }
 
+//Represents a tag and the total number of images with that tag
 type Tag struct {
 	Tag string
 	MediaCount int
 }
 
+//As well as being able to look near a specific longitude/latitude, you can also look at
+//a specific location, such as a bar, museum, company, etc. This type represents the
+//responses from Instagram's servers.
 type Location struct {
 	ID string
 	Name string
@@ -62,7 +78,9 @@ type Location struct {
 //This will does all GET requests (all Instagram API requests that do not require 
 //authentication are GET requests anyway). It returns the JSON object in case of success
 //or an empty object in case of failure
+
 //endpoint: The api request that you want to do on Instagram
+
 //params: The parameters you may want to add
 func (api InstagramAPI) DoRequest(endpoint string, params map[string]string) JSON {
 	var contents []byte
@@ -86,7 +104,9 @@ func (api InstagramAPI) DoRequest(endpoint string, params map[string]string) JSO
 
 //This function will build the request URL so that you can add extra parameters to
 //requests.
+
 //endpoint: The API request that you are planning on doing; such as tags/{x}/media/recent
+
 //params: A map of the extra parameters (aside from client_id) that you want to add to
 //the query
 func (api InstagramAPI) GetURLForRequest(endpoint string, params map[string]string) string {
@@ -110,6 +130,7 @@ func (api InstagramAPI) GetURLForRequest(endpoint string, params map[string]stri
 
 //This will take API a JSON object that includes the details for an image and puts it into
 //the Go data structure for Images.
+
 //data: a JSON object that represents an image
 func ImageFromAPI(data JSON) Image {
 	var image Image
@@ -183,6 +204,19 @@ func UserFromAPI(data JSON) User {
 	return user
 }
 
+//Many queries to Instagram's API simply return a list of images (tag, user, location, etc)
+//so this function handles the request to simplify things a little. Note that Intago
+//functions provide wrappers around this function so you need not call it, however it is
+//exported in case Instagram adds to their API in the future and you want to add to this
+//library
+
+//endPoint: The API endpoint, such as /tags/tag/media/recent
+
+//before: (optional) Search for images before this image ID
+
+//after: (optional) Search for images after this image ID
+
+//max: (optional) The great number of images to return (there is an imposed limit on this)
 func (api InstagramAPI) GenericImageListRequest(endPoint, before, after string, max int) []Image {
 	params := getEmptyMap()
 	if max > 0 {
@@ -205,7 +239,7 @@ func (api InstagramAPI) GenericImageListRequest(endPoint, before, after string, 
 
 //Download a file from the given URL and save it to the given file
 //Note that the Instagram API encourages you to take into account the IP of Instagram
-//users, so you shouldn't download files with this
+//users, so you shouldn't download user's images with this
 func Download(url, saveFile string) {
 	out, err := os.Create(saveFile)
 	if err != nil {
