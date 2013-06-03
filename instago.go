@@ -78,9 +78,9 @@ type Location struct {
 //This will does all GET requests (all Instagram API requests that do not require 
 //authentication are GET requests anyway). It returns the JSON object in case of success
 //or an empty object in case of failure
-
+//
 //endpoint: The api request that you want to do on Instagram
-
+//
 //params: The parameters you may want to add
 func (api InstagramAPI) DoRequest(endpoint string, params map[string]string) JSON {
 	var contents []byte
@@ -104,9 +104,9 @@ func (api InstagramAPI) DoRequest(endpoint string, params map[string]string) JSO
 
 //This function will build the request URL so that you can add extra parameters to
 //requests.
-
+//
 //endpoint: The API request that you are planning on doing; such as tags/{x}/media/recent
-
+//
 //params: A map of the extra parameters (aside from client_id) that you want to add to
 //the query
 func (api InstagramAPI) GetURLForRequest(endpoint string, params map[string]string) string {
@@ -130,7 +130,7 @@ func (api InstagramAPI) GetURLForRequest(endpoint string, params map[string]stri
 
 //This will take API a JSON object that includes the details for an image and puts it into
 //the Go data structure for Images.
-
+//
 //data: a JSON object that represents an image
 func ImageFromAPI(data JSON) Image {
 	var image Image
@@ -209,13 +209,13 @@ func UserFromAPI(data JSON) User {
 //functions provide wrappers around this function so you need not call it, however it is
 //exported in case Instagram adds to their API in the future and you want to add to this
 //library
-
+//
 //endPoint: The API endpoint, such as /tags/tag/media/recent
-
+//
 //before: (optional) Search for images before this image ID
-
+//
 //after: (optional) Search for images after this image ID
-
+//
 //max: (optional) The great number of images to return (there is an imposed limit on this)
 func (api InstagramAPI) GenericImageListRequest(endPoint, before, after string, max int) []Image {
 	params := getEmptyMap()

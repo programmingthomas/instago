@@ -3,6 +3,7 @@ package instago
 import "fmt"
 
 //Gets basic information such as name and coordinates for a location
+//
 //locationId: The id of a location to lookup
 func (api InstagramAPI) Location(locationId string) Location {
 	params := getEmptyMap()
@@ -11,16 +12,22 @@ func (api InstagramAPI) Location(locationId string) Location {
 }
 
 //Gets media posted from that location
+//
 //locationId: The id of the location
+//
 //beforePost: (optional = "") posts before this ID
+//
 //afterPost: (optional = "") posts after this ID
 func (api InstagramAPI) LocationPosts(locationId, beforePost, afterPost string) []Image {
 	return api.GenericImageListRequest("locations/" + locationId + "/media/recent", beforePost, afterPost, 0)
 }
 
 //Gets a list of locations near a give latitude/longitude within a certain distance
+//
 //lat: The latitude to search near
+//
 //long: The longitude to search near
+//
 //distance: (optional = 0) The number of meters to search within
 func (api InstagramAPI) LocationsNear(lat, long, distance float64) []Location {
 	params := getEmptyMap()
